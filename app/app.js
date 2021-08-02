@@ -1,11 +1,35 @@
-let vW = () => windowWidth - 20;
-let vH = () => windowHeight - 20;
+let vW = () => windowWidth-15;
+let vH = () => windowHeight-60;
 
 
 let points = new Points();
 let selected = false;
 let pg;
 let changed = true;
+
+
+function selectMat(fun){
+    switch (fun) {
+        case "x2": return () => math.dotMultiply(points.X,points.X);
+        case "x3": return () => math.dotMultiply(points.X,math.dotMultiply(points.X,points.X));
+    }
+}
+function selectFn(fun){
+    switch (fun) {
+        case "x2": return (args, x) => args[0]* x*x;
+        case "x3": return (args, x) => args[0]* x*x*x;
+    }
+}
+
+let selectedFn = selectFn("x2");
+let selectedMat = selectMat("x2");
+
+function selectGraph(fun){
+    selectedFn = selectFn(fun);
+    selectedMat = selectMat(fun);
+}
+
+
 
 function canvasInit(w, h) {
     pg.clear();
@@ -49,13 +73,12 @@ function mousePressed() {
 function mouseReleased() {
     clear();
     if (points.any()) {
-        const args = lstSqr(math.matrix([math.dotMultiply(points.X,points.X)]), points.Y);
-        drawFunc(args, function (args, x) {
-            return args[0]* x*x;
-        });
+        const args = lstSqr(math.matrix([selectedMat()]), points.Y);
+        drawFunc(args, selectedFn);
         points.clear();
         selected = false;
     }
+    changed = true;
 }
 
 function mouseDragged() {
