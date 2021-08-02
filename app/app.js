@@ -1,30 +1,6 @@
 let vW = () => windowWidth - 20;
 let vH = () => windowHeight - 20;
 
-class Points {
-    constructor() {
-        this.clear();
-    }
-
-    clear() {
-        this.X = [];
-        this.Y = [];
-    }
-
-    offset(x0, y0) {
-        this.x0 = x0;
-        this.y0 = y0;
-    }
-
-    append(x, y) {
-        this.X[this.X.length] = x - this.x0;
-        this.Y[this.Y.length] = y - this.y0;
-    }
-
-    any() {
-        return 0 !== this.X.length;
-    }
-}
 
 let points = new Points();
 let selected = false;
@@ -73,9 +49,9 @@ function mousePressed() {
 function mouseReleased() {
     clear();
     if (points.any()) {
-        const args = lstSqr(math.matrix([math.dotMultiply(points.X,points.X), math.ones(points.X.length)]), points.Y);
+        const args = lstSqr(math.matrix([math.dotMultiply(points.X,points.X)]), points.Y);
         drawFunc(args, function (args, x) {
-            return args[0]* x*x + args[1];
+            return args[0]* x*x;
         });
         points.clear();
         selected = false;
