@@ -10,14 +10,16 @@ let changed = true;
 
 function selectMat(fun){
     switch (fun) {
-        case "x2": return () => tf.tensor2d(points.X, [points.X.length,1]).pow(tf.fill([points.X.length,1], 2));
-        case "x3": return () => tf.tensor2d(points.X, [points.X.length,1]).pow(tf.fill([points.X.length,1], 3));
+        case "x2": return () => math.transpose([math.dotPow(points.X, 2)]);
+        case "x3": return () => math.transpose([math.dotPow(points.X, 3)]);
+        case "sin": return () => math.transpose([math.sin(points.X)]);
     }
 }
 function selectFn(fun){
     switch (fun) {
         case "x2": return (args, x) => args[0]* x*x;
         case "x3": return (args, x) => args[0]* x*x*x;
+        case "sin": return (args, x) => args[0]*math.sin(x);
     }
 }
 
@@ -70,12 +72,10 @@ function mousePressed() {
     points.offset(mX, mY);
 }
 
-async function mouseReleased() {
+function mouseReleased() {
     clear();
-    changed = true;
-    draw();
     if (points.any()) {
-        const args = await lstSqr(selectedMat(), points.Y);
+        const args = lstSqr(selectedMat(), points.Y);
         drawFunc(args, selectedFn);
         points.clear();
         selected = false;
@@ -90,11 +90,10 @@ function mouseDragged() {
     points.append(mX, mY);
 }
 
-async function lstSqr(A, b) {
-    const [q, r] = tf.linalg.qr(A);
-    const _A = await r.array();
-    const _b = await q.transpose().dot(b).array();
-    return math.usolve(_A, _b);
+function lstSqr(A, b) {
+    const {Q, R} = math.qr(A);
+    const _b = math.multiply(Q,b);
+    return math.usolve([R[0]],[_b[0]]);
 }
 
 function drawFunc(args, func) {
