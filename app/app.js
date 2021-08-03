@@ -70,15 +70,16 @@ function mousePressed() {
     points.offset(mX, mY);
 }
 
-async function mouseReleased() {
+function mouseReleased() {
     clear();
     changed = true;
     draw();
     if (points.any()) {
-        const args = await lstSqr(selectedMat(), points.Y);
-        drawFunc(args, selectedFn);
-        points.clear();
-        selected = false;
+        lstSqr(selectedMat(), points.Y).then(res => {
+            drawFunc(res, selectedFn);
+            points.clear();
+            selected = false;
+        })
     }
     changed = true;
 }
@@ -92,9 +93,9 @@ function mouseDragged() {
 
 async function lstSqr(A, b) {
     const [q, r] = tf.linalg.qr(A);
-    const _A = await r.array();
-    const _b = await q.transpose().dot(b).array();
-    return math.usolve(_A, _b);
+    const _A = r.array();
+    const _b = q.transpose().dot(b).array();
+    return math.usolve(await _A, await _b);
 }
 
 function drawFunc(args, func) {
