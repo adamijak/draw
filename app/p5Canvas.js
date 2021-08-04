@@ -8,10 +8,16 @@ const p5Canvas = (p) => {
     let wW = () => p.windowWidth-15;
     let wH = () => p.windowHeight-60;
 
-    let canvasInit = function (w, h) {
+    let canvasInit = (w, h) => {
         pg.clear();
-        pg.line(0, h / 2, w, h / 2);
-        pg.line(w / 2, 0, w / 2, h);
+        const w2 = w/2;
+        const h2 = h/2;
+        drawCross(pg, w2, h2,w2,h2);
+    }
+
+    let drawCross = (cnv, x, y, w, h) => {
+        cnv.line(x - w, y, x+w, y);
+        cnv.line(x, y-h, x, y+h);
     }
 
     p.selectFun = (fun) => selectedFun = fun;
@@ -35,8 +41,7 @@ const p5Canvas = (p) => {
         const mX = p.mouseX;
         const mY = p.mouseY;
         p.strokeWeight(1);
-        p.line(mX - 100, mY, mX + 100, mY);
-        p.line(mX, mY - 100, mX, mY + 100);
+        drawCross(p, mX, mY, 50, 50);
         p.strokeWeight(3);
         points.offset(mX, mY);
     }

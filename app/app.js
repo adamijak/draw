@@ -1,13 +1,14 @@
 function selectMat(fun,p){
-    const shape = [p.length,1];
+    const vecShape = [p.length,1];
     switch (fun) {
-        case "x": return tf.tensor2d(p, shape);
-        case "x2": return tf.tensor2d(p, shape).pow(tf.fill(shape, 2));
-        case "x3": return tf.tensor2d(p, shape).pow(tf.fill(shape, 3));
-        case "x1/2": return tf.tensor2d(p, shape).pow(tf.fill(shape, 1/2));
-        case "1/x": return tf.tensor2d(p, shape).pow(tf.fill(shape, -1));
-        case "sin": return tf.tensor2d(p, shape).sin();
-        case "log": return tf.tensor2d(p, shape).log();
+        case "x": return tf.tensor2d(p, vecShape);
+        case "x2": return tf.tensor2d(p, vecShape).pow(tf.scalar(2));
+        case "x3": return tf.tensor2d(p, vecShape).pow(tf.scalar(3));
+        // case "x3x2": return tf.tensor2d([tf.pow(p, tf.fill(vecShape, 3)),tf.pow(p,tf.fill(vecShape, 2))], [p.length,1]);
+        case "x1/2": return tf.tensor2d(p, vecShape).pow(tf.scalar(1/2));
+        case "1/x": return tf.tensor2d(p, vecShape).pow(tf.scalar(-1));
+        case "sin": return tf.tensor2d(p, vecShape).sin();
+        case "log": return tf.tensor2d(p, vecShape).log();
     }
 }
 function selectFun(fun){
@@ -17,10 +18,17 @@ function selectFun(fun){
         case "x3": return (args, x) => args[0]* x*x*x;
         case "x1/2": return (args, x) => args[0]* Math.sqrt(x);
         case "1/x": return  (args, x) => args[0]/x;
-        case "sin": return (args, x) => args[0]*Math.sin(x);
+        case "sin": return (args, x) => Math.PI*args[0]*Math.sin(x);
         case "log": return (args, x) => args[0]*Math.log(x);
     }
 }
+
+// function selectFunc(fun){
+//     switch (fun) {
+//         case "x": return  (args, x) => args[0]*x;
+//         case "x2": return (args, x) => args[0]* x*x;
+//     }
+// }
 
 async function lstSqr(A, b) {
     const [q, r] = tf.linalg.qr(A);
