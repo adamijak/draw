@@ -1,4 +1,7 @@
 class Points {
+    X = [];
+    Y = [];
+
     constructor() {
         this.clear();
     }

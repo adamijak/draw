@@ -24,9 +24,13 @@
                         Dropdown
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><button class="dropdown-item" onclick="selectGraph('x2')">X^2</button></li>
-                        <li><button class="dropdown-item" onclick="selectGraph('x3')">X^3</button></li>
-                        <li><button class="dropdown-item" onclick="selectGraph('sin')">sin(X)</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('x')">ax + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('x2')">ax^2 + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('x3')">ax^3 + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">asin(X) + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('log')">alog(X) + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('x1/2')">asqrt(X) + b</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFun('1/x')">a/x + b</button></li>
                     </ul>
                 </li>
             </ul>
@@ -37,12 +41,13 @@
         </div>
     </div>
 </nav>
-<main>
+<main id="p5Canvas">
 </main>
 
 <script src="./js/bootstrap.min.js"></script>
 <script src="./app/points.js"></script>
-<script src="./app/app.js" defer></script>
+<script src="./app/app.js"></script>
+<script src="./app/p5Canvas.js"></script>
 </body>
 
 </html>
