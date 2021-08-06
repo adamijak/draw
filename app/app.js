@@ -1,54 +1,82 @@
-function selectMat(fun,p){
-    const vecShape = [p.length,1];
-    switch (fun) {
-        case "x": return tf.tensor2d(p, vecShape);
-        case "x2": return tf.tensor2d(p, vecShape).pow(tf.scalar(2));
-        case "x3": return tf.tensor2d(p, vecShape).pow(tf.scalar(3));
-        // case "x3x2": return tf.tensor2d([tf.pow(p, tf.fill(vecShape, 3)),tf.pow(p,tf.fill(vecShape, 2))], [p.length,1]);
-        case "x1/2": return tf.tensor2d(p, vecShape).pow(tf.scalar(1/2));
-        case "1/x": return tf.tensor2d(p, vecShape).pow(tf.scalar(-1));
-        case "sin": return tf.tensor2d(p, vecShape).sin();
-        case "log": return tf.tensor2d(p, vecShape).log();
-    }
-}
-function selectFun(fun){
-    switch (fun) {
-        case "x": return  (args, x) => args[0]*x;
-        case "x2": return (args, x) => args[0]* x*x;
-        case "x3": return (args, x) => args[0]* x*x*x;
-        case "x1/2": return (args, x) => args[0]* Math.sqrt(x);
-        case "1/x": return  (args, x) => args[0]/x;
-        case "sin": return (args, x) => Math.PI*args[0]*Math.sin(x);
-        case "log": return (args, x) => args[0]*Math.log(x);
-    }
-}
+import {Graph} from "./graph.js"
 
-// function selectFunc(fun){
-//     switch (fun) {
-//         case "x": return  (args, x) => args[0]*x;
-//         case "x2": return (args, x) => args[0]* x*x;
-//     }
-// }
+const p5Canvas = (p) => {
+    let graph = new Graph();
+    let pg = null;
+    let changed = true;
+    let centeredDraw = false;
 
-async function lstSqr(A, b) {
-    const [q, r] = tf.linalg.qr(A);
-    const _A = r.array();
-    const _b = q.transpose().dot(b).array();
-    return math.usolve(await _A, await _b);
-}
+    let wW = () => p.windowWidth - 15;
+    let wH = () => p.windowHeight - 60;
 
-function drawFunc(pg, w, points, args, func) {
-    if (args == null) {
-        return;
+    p.selectFn = (fn) => graph.selectFn(fn);
+    p.setCenteredDraw = (bool) => centeredDraw = bool;
+
+    let canvasInit = (w, h) => {
+        pg.clear();
+        const w2 = w / 2;
+        const h2 = h / 2;
+        drawCross(pg, w2, h2, w2, h2);
     }
-    let px = 0;
-    let py = func(args, px - points.x0);
-    for (let x = 0; x < w; x += 1) {
-        let y = func(args, x-points.x0);
-        pg.line(px, py + points.y0, x, y + points.y0)
-        px = x;
-        py = y;
+
+    let drawCross = (cnv, x, y, w, h) => {
+        cnv.line(x - w, y, x + w, y);
+        cnv.line(x, y - h, x, y + h);
     }
-}
+
+
+    p.setup = () => {
+        let w = wW();
+        let h = wH();
+        const cnv = p.createCanvas(w, h);
+        pg = p.createGraphics(w, h);
+        canvasInit(w, h);
+    }
+
+    p.draw = () => {
+        if (changed) {
+            changed = false;
+            p.image(pg, 0, 0);
+        }
+    }
+
+    p.mousePressed = () => {
+        const mX = p.mouseX;
+        const mY = p.mouseY;
+        p.strokeWeight(1);
+        drawCross(p, mX, mY, 50, 50);
+        p.strokeWeight(3);
+        graph.offset(mX,mY);
+    }
+
+    p.mouseReleased = () => {
+        p.clear();
+        changed = true;
+        p.draw();
+        if (graph.canFit()) {
+            graph.fitDraw(pg, wW()).then(() =>{
+                graph.clear();
+                changed = true;
+            });
+        }
+    }
+
+    p.mouseDragged = () => {
+        const mX = p.mouseX;
+        const mY = p.mouseY;
+        p.ellipse(mX, mY, 5);
+        graph.append(mX, mY);
+    }
+
+    p.windowResized = () => {
+        let w = wW();
+        let h = wH();
+        p.resizeCanvas(w, h);
+        canvasInit(w, h);
+        changed = true;
+    }
+};
+
+window.P5 = new p5(p5Canvas, 'p5Canvas');
 
 

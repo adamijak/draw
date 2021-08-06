@@ -1,8 +1,7 @@
 class Points {
-    X = [];
-    Y = [];
+    cnv = null;
 
-    constructor() {
+    constructor(cnv) {
         this.clear();
     }
 

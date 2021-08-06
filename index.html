@@ -20,20 +20,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Function
+                    <a class="nav-link dropdown-toggle" href="#" id="fnSet1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Functions 1
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><button class="dropdown-item" onclick="P5.selectFun('x')">x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFun('x2')">x^2</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFun('x3')">x^3</button></li>
-<!--                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>-->
-                        <li><button class="dropdown-item" onclick="P5.selectFun('log')">log x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFun('x1/2')">x^1/2</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFun('1/x')">1/x</button></li>
+                    <ul class="dropdown-menu" aria-labelledby="fnSet1">
+                        <li><button class="dropdown-item" onclick="P5.selectFn('x')">x</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('x2')">x^2</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('x3')">x^3</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('x1/2')">x^1/2</button></li>
+                        <!--                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>-->
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="fnSet2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Functions 2
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="fnSet2">
+                        <li><button class="dropdown-item" onclick="P5.selectFn('log')">log x</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('1/x')">1/x</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('ex')">e^x</button></li>
+                        <li><button class="dropdown-item" onclick="P5.selectFn('2x')">2^x</button></li>
                     </ul>
                 </li>
             </ul>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="centeredDraw" onclick="P5.setCenteredDraw(this.checked)">
+                <label class="form-check-label" for="CenteredDraw">Center draw</label>
+            </div>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -45,9 +58,8 @@
 </main>
 
 <script src="./js/bootstrap.min.js"></script>
-<script src="./app/points.js"></script>
-<script src="./app/app.js"></script>
-<script src="./app/p5Canvas.js"></script>
+<script src="./app/app.js" type="module"></script>
+
 </body>
 
 </html>
