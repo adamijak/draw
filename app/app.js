@@ -5,6 +5,7 @@ let centeredDraw = false;
 let centeredDrawSelected = false;
 let isDrawing = false;
 let lastLine;
+let points = [];
 
 const stage = new Konva.Stage({
     container: 'container',
@@ -35,7 +36,9 @@ stage.on("mousemove", () => {
 
     const mouse = stage.getPointerPosition();
     graph.append(mouse.x, mouse.y);
-    lastLine.points(lastLine.points().concat([mouse.x, mouse.y]));
+    points.push(mouse.x);
+    points.push(mouse.y);
+    lastLine.points(points);
 });
 
 stage.on("mouseup", () => {
@@ -45,6 +48,7 @@ stage.on("mouseup", () => {
             layer.add(res);
             graph.clear();
             lastLine.remove();
+            points = [];
         });
     }
 });
