@@ -48,20 +48,25 @@ export class Graph {
         return math.usolve(await U, await v);
     }
 
-    draw(args, cnv, w) {
-        let px = 0;
-        let py = this.#fnX(px-this.x0,args);
+    draw(args, w) {
+        let points = [];
         for (let x = 0; x < w; x += 1) {
             const y = this.#fnX(x-this.x0,args);
-            cnv.line(px, py + this.y0, x, y + this.y0)
-            px = x;
-            py = y;
+            points.push(x);
+            points.push(y);
         }
+        return new Konva.Line({
+            x: this.x0,
+            y: this.y0,
+            stroke: 'black',
+            strokeWeight: 3,
+            points: points,
+        });
     }
 
-    async fitDraw(cnv, w) {
+    async fitDraw(w) {
         const args = await this.fit();
-        this.draw(args, cnv, w);
+        return this.draw(args, w);
     }
 
     canFit = () => 0 !== this.A.length;
