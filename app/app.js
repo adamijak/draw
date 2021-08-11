@@ -1,82 +1,73 @@
 import {Graph} from "./graph.js"
 
-const p5Canvas = (p) => {
-    let graph = new Graph();
-    let pg = null;
-    let changed = true;
-    let centeredDraw = false;
+const canvas = document.getElementById('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    let wW = () => p.windowWidth - 15;
-    let wH = () => p.windowHeight - 60;
+paper.setup(canvas);
 
-    p.selectFn = (fn) => graph.selectFn(fn);
-    p.setCenteredDraw = (bool) => centeredDraw = bool;
+let graph = new Graph();
+let drawMode = false;
 
-    let canvasInit = (w, h) => {
-        pg.clear();
-        const w2 = w / 2;
-        const h2 = h / 2;
-        drawCross(pg, w2, h2, w2, h2);
-    }
+window.selectFn = (fn) => graph.selectFn(fn);
+window.selectDrawMode = (bool) => drawMode = bool;
 
-    let drawCross = (cnv, x, y, w, h) => {
-        cnv.line(x - w, y, x + w, y);
-        cnv.line(x, y - h, x, y + h);
-    }
+window.undo = () => {
+    paper.project.activeLayer.lastChild.remove();
+}
 
+let center = paper.project.view.center;
+center.x = Math.floor(center.x);
+center.y = Math.floor(center.y);
 
-    p.setup = () => {
-        let w = wW();
-        let h = wH();
-        const cnv = p.createCanvas(w, h);
-        pg = p.createGraphics(w, h);
-        canvasInit(w, h);
-    }
+const axes = new paper.CompoundPath({
+    children: [
+        new paper.Path.Line([0, center.y], [paper.project.view.size.width, center.y]),
+        new paper.Path.Line([center.x, 0], [center.x, paper.project.view.size.height]),
+    ],
+    strokeWidth: 2,
+    strokeColor: 'black',
+});
 
-    p.draw = () => {
-        if (changed) {
-            changed = false;
-            p.image(pg, 0, 0);
-        }
-    }
+const drawAxes = new paper.CompoundPath({
+    children: [
+        new paper.Path.Line([0, 0], [paper.project.view.size.width, 0]),
+        new paper.Path.Line([0, 0], [0, paper.project.view.size.height]),
+    ],
+    strokeWidth: 0.5,
+    strokeColor: 'black',
+    visible: false,
+});
 
-    p.mousePressed = () => {
-        const mX = p.mouseX;
-        const mY = p.mouseY;
-        p.strokeWeight(1);
-        drawCross(p, mX, mY, 50, 50);
-        p.strokeWeight(3);
-        graph.offset(mX,mY);
-    }
+const drawLine = new paper.Path({
+    selected: true,
+});
 
-    p.mouseReleased = () => {
-        p.clear();
-        changed = true;
-        p.draw();
-        if (graph.canFit()) {
-            graph.fitDraw(pg, wW()).then(() =>{
-                graph.clear();
-                changed = true;
-            });
-        }
-    }
-
-    p.mouseDragged = () => {
-        const mX = p.mouseX;
-        const mY = p.mouseY;
-        p.ellipse(mX, mY, 5);
-        graph.append(mX, mY);
-    }
-
-    p.windowResized = () => {
-        let w = wW();
-        let h = wH();
-        p.resizeCanvas(w, h);
-        canvasInit(w, h);
-        changed = true;
-    }
+paper.project.view.onMouseDown = (event) => {
+    paper.project.view.element.style.setProperty('cursor', 'crosshair');
+    drawAxes.visible = true;
+    drawAxes.children[0].setPosition([center.x, event.point.y]);
+    drawAxes.children[1].setPosition([event.point.x, center.y]);
+    graph.offset(event.point);
 };
 
-window.P5 = new p5(p5Canvas, 'p5Canvas');
+paper.project.view.onMouseDrag = (event) => {
+    drawLine.add(event.point);
+    graph.append(event.point);
+};
+
+paper.project.view.onMouseUp = (event) => {
+    if (graph.canFit()) {
+        graph.fitDraw(paper.project.view.size.width).then(() => {
+            graph.clear();
+        });
+    }
+    paper.project.view.element.style.setProperty('cursor', null);
+    drawLine.removeSegments();
+};
+
+
+
+
 
 

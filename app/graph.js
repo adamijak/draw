@@ -28,17 +28,17 @@ export class Graph {
         this.#selectedFn = this.#selectFn(fn);
     }
 
-    append(x, y) {
-        const fnRow = this.#selectedFn(x-this.x0);
+    append(point) {
+        const fnRow = this.#selectedFn(point.x-this.x0);
         if (!fnRow.includes(NaN) && !fnRow.includes(Infinity) && !fnRow.includes(-Infinity)){
             this.A[this.A.length] = fnRow;
-            this.b[this.b.length] = y-this.y0;
+            this.b[this.b.length] = point.y-this.y0;
         }
     }
 
-    offset(x0, y0) {
-        this.x0 = x0;
-        this.y0 = y0;
+    offset(point) {
+        this.x0 = point.x;
+        this.y0 = point.y;
     }
 
     async fit(){
@@ -48,20 +48,24 @@ export class Graph {
         return math.usolve(await U, await v);
     }
 
-    draw(args, cnv, w) {
-        let px = 0;
-        let py = this.#fnX(px-this.x0,args);
+    draw(args, w) {
+        const line = new paper.Path({
+            strokeWidth: 2,
+            strokeColor: 'blue',
+        });
+
         for (let x = 0; x < w; x += 1) {
             const y = this.#fnX(x-this.x0,args);
-            cnv.line(px, py + this.y0, x, y + this.y0)
-            px = x;
-            py = y;
+            if (!isNaN(y) && isFinite(y)){
+                line.add([x,y+this.y0]);
+            }
         }
+        line.simplify();
     }
 
-    async fitDraw(cnv, w) {
+    async fitDraw(w) {
         const args = await this.fit();
-        this.draw(args, cnv, w);
+        this.draw(args, w);
     }
 
     canFit = () => 0 !== this.A.length;

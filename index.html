@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph draw</title>
     <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <script src="./js/p5.js"></script>
+    <script src="./js/paper-full.js"></script>
     <script src="./js/math.js"></script>
     <script src="./js/tf.min.js"></script>
 </head>
@@ -24,10 +24,10 @@
                         Functions 1
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="fnSet1">
-                        <li><button class="dropdown-item" onclick="P5.selectFn('x')">x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('x2')">x^2</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('x3')">x^3</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('x1/2')">x^1/2</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('x')">x</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('x2')">x^2</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('x3')">x^3</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('x1/2')">x^1/2</button></li>
                         <!--                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>-->
                     </ul>
                 </li>
@@ -36,15 +36,16 @@
                         Functions 2
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="fnSet2">
-                        <li><button class="dropdown-item" onclick="P5.selectFn('log')">log x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('1/x')">1/x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('ex')">e^x</button></li>
-                        <li><button class="dropdown-item" onclick="P5.selectFn('2x')">2^x</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('log')">log x</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('1/x')">1/x</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('ex')">e^x</button></li>
+                        <li><button class="dropdown-item" onclick="selectFn('2x')">2^x</button></li>
                     </ul>
                 </li>
             </ul>
+            <div class="btn btn-secondary" onclick="undo()">Undo</div>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="centeredDraw" onclick="P5.setCenteredDraw(this.checked)">
+                <input class="form-check-input" type="checkbox" id="centeredDraw" onclick="selectDrawMode(this.checked)">
                 <label class="form-check-label" for="CenteredDraw">Center draw</label>
             </div>
             <form class="d-flex">
@@ -54,7 +55,8 @@
         </div>
     </div>
 </nav>
-<main id="p5Canvas">
+<main>
+    <canvas id="canvas"></canvas>
 </main>
 
 <script src="./js/bootstrap.min.js"></script>
