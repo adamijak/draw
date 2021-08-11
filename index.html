@@ -45,8 +45,8 @@
             </ul>
             <div class="btn btn-secondary" onclick="undo()">Undo</div>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="centeredDraw" onclick="selectDrawMode(this.checked)">
-                <label class="form-check-label" for="CenteredDraw">Center draw</label>
+                <input class="form-check-input" type="checkbox" id="drawMode" onclick="selectDrawMode(this.checked)">
+                <label class="form-check-label" for="drawMode">Center draw</label>
             </div>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -59,7 +59,7 @@
     <canvas id="canvas"></canvas>
 </main>
 
-<script src="./js/bootstrap.min.js"></script>
+<script src="./js/bootstrap.bundle.min.js"></script>
 <script src="./app/app.js" type="module"></script>
 
 </body>
