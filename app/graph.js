@@ -50,7 +50,7 @@ export class Graph {
 
     draw(args, w, color) {
         const line = new paper.Path({
-            strokeWidth: 2,
+            strokeWidth: 1.5,
             strokeColor: color,
         });
 
