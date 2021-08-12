@@ -67,15 +67,15 @@ paper.project.view.onMouseUp = (event) => {
     paper.project.view.element.style.setProperty('cursor', null);
     drawLine.removeSegments();
 };
-paper.view.onKeyUp = (event) => {
-    if (event.key === 'z'){
-        if (event.modifiers.shift){
-            redo();
-        }else{
-            undo();
-        }
-    }
-}
+// paper.view.onKeyUp = (event) => {
+//     if (event.key === 'z'){
+//         if (event.modifiers.shift){
+//             redo();
+//         }else{
+//             undo();
+//         }
+//     }
+// }
 // Global functions
 // window.selectFn = (fn) => graph.selectFn(fn);
 // window.selectDrawMode = (bool) => drawMode = bool;
