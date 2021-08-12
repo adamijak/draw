@@ -113,7 +113,7 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
                     endOffsetDraw()
                     break;
                 default:
-                    handleCommonKeys(event.key);
+                    handleCommonKeys(event);
             }
         }
     },
