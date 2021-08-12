@@ -2,8 +2,10 @@ import {Graph} from "./graph.js"
 
 const canvas = document.getElementById('canvas');
 const color = document.getElementById('color');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+canvas.width = 200;
+canvas.height = 200;
 
 paper.setup(canvas);
 
@@ -75,22 +77,22 @@ paper.view.onKeyUp = (event) => {
     }
 }
 // Global functions
-window.selectFn = (fn) => graph.selectFn(fn);
-window.selectDrawMode = (bool) => drawMode = bool;
-window.undo = () => {
-    const lastLine = graphStack.lastChild;
-    if (lastLine !== null){
-        lastLine.remove();
-        redoStack.addChild(lastLine);
-    }
-}
-window.redo = () => {
-    const lastLine = redoStack.lastChild;
-    if (lastLine !== null) {
-        lastLine.remove();
-        graphStack.addChild(lastLine);
-    }
-}
+// window.selectFn = (fn) => graph.selectFn(fn);
+// window.selectDrawMode = (bool) => drawMode = bool;
+// window.undo = () => {
+//     const lastLine = graphStack.lastChild;
+//     if (lastLine !== null){
+//         lastLine.remove();
+//         redoStack.addChild(lastLine);
+//     }
+// }
+// window.redo = () => {
+//     const lastLine = redoStack.lastChild;
+//     if (lastLine !== null) {
+//         lastLine.remove();
+//         graphStack.addChild(lastLine);
+//     }
+// }
 
 
 
