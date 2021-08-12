@@ -8,13 +8,7 @@ paper.setup(canvas);
 
 let graph = new Graph();
 let drawMode = false;
-
-window.selectFn = (fn) => graph.selectFn(fn);
-window.selectDrawMode = (bool) => drawMode = bool;
-
-window.undo = () => {
-    paper.project.activeLayer.lastChild.remove();
-}
+let graphGroup = new paper.Group();
 
 let center = paper.project.view.center;
 center.x = Math.floor(center.x);
@@ -58,15 +52,28 @@ paper.project.view.onMouseDrag = (event) => {
 
 paper.project.view.onMouseUp = (event) => {
     if (graph.canFit()) {
-        graph.fitDraw(paper.project.view.size.width).then(() => {
+        graph.fitDraw(paper.project.view.size.width).then((line) => {
+            graphGroup.addChild(line)
             graph.clear();
         });
     }
     paper.project.view.element.style.setProperty('cursor', null);
     drawLine.removeSegments();
 };
-
-
+paper.view.onKeyUp = (event) => {
+    if (event.key === 'z'){
+        undo();
+    }
+}
+// Global functions
+window.selectFn = (fn) => graph.selectFn(fn);
+window.selectDrawMode = (bool) => drawMode = bool;
+window.undo = () => {
+    const lastLine = graphGroup.lastChild;
+    if (lastLine !== null){
+        lastLine.remove();
+    }
+}
 
 
 

@@ -61,11 +61,12 @@ export class Graph {
             }
         }
         line.simplify();
+        return line;
     }
 
     async fitDraw(w) {
         const args = await this.fit();
-        this.draw(args, w);
+        return this.draw(args, w);
     }
 
     canFit = () => 0 !== this.A.length;

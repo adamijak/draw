@@ -11,39 +11,61 @@
     <script src="./js/tf.min.js"></script>
 </head>
 <body style="overflow: hidden; height: 100%">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Graph draw</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="fnSet1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Functions 1
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="fnSet1">
-                        <li><button class="dropdown-item" onclick="selectFn('x')">x</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x2')">x^2</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x3')">x^3</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x1/2')">x^1/2</button></li>
-                        <!--                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>-->
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="fnSet2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Functions 2
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="fnSet2">
-                        <li><button class="dropdown-item" onclick="selectFn('log')">log x</button></li>
-<!--                        <li><button class="dropdown-item" onclick="selectFn('1/x')">1/x</button></li>-->
-<!--                        <li><button class="dropdown-item" onclick="selectFn('ex')">e^x</button></li>-->
-<!--                        <li><button class="dropdown-item" onclick="selectFn('2x')">2^x</button></li>-->
-                    </ul>
-                </li>
-            </ul>
-<!--            <div class="btn btn-secondary" onclick="undo()">Undo</div>-->
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="#">Graph draw</a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"-->
+<!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="fnSet1" role="button" data-bs-toggle="dropdown"-->
+<!--                       aria-expanded="false">-->
+<!--                        Functions 1-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="fnSet1">-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('x')">x</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('x2')">x^2</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('x3')">x^3</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('x1/2')">x^1/2</button>-->
+<!--                        </li>-->
+<!--                        &lt;!&ndash;                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>&ndash;&gt;-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="fnSet2" role="button" data-bs-toggle="dropdown"-->
+<!--                       aria-expanded="false">-->
+<!--                        Functions 2-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="fnSet2">-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('log')">log x</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('1/x')">1/x</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('ex')">e^x</button>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <button class="dropdown-item" onclick="selectFn('2x')">2^x</button>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            <input type="color" id="favcolor" name="favcolor" value="#ff0000">-->
+<!--            <div class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bot" title="Key 'z'"-->
+<!--                 onclick="undo()">Undo-->
+<!--            </div>-->
 <!--            <div class="form-check form-switch">-->
 <!--                <input class="form-check-input" type="checkbox" id="drawMode" onclick="selectDrawMode(this.checked)">-->
 <!--                <label class="form-check-label" for="drawMode">Center draw</label>-->
@@ -52,11 +74,62 @@
 <!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
 <!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
 <!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+<main>
+    <div class="row">
+            <div class="col-1 d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
+                <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                    <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                    <span class="visually-hidden">Icon-only</span>
+                </a>
+                <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active py-3 border-bottom" aria-current="page" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Home"><use xlink:href="#home"></use></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Dashboard"><use xlink:href="#speedometer2"></use></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Orders"><use xlink:href="#table"></use></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Products"><use xlink:href="#grid"></use></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Customers"><use xlink:href="#people-circle"></use></svg>
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown border-top">
+                    <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="24" height="24">
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+        </div>
+        <div class="col-11">
+            <canvas id="canvas"></canvas>
         </div>
     </div>
-</nav>
-<main>
-    <canvas id="canvas"></canvas>
+
+
 </main>
 
 <script src="./js/bootstrap.bundle.min.js"></script>
