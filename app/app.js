@@ -2,8 +2,10 @@ import {Graph} from "./graph.js"
 
 const canvas = document.getElementById('canvas');
 const color = document.getElementById('color');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+canvas.width = 200;
+canvas.height = 200;
 
 paper.setup(canvas);
 
@@ -65,32 +67,32 @@ paper.project.view.onMouseUp = (event) => {
     paper.project.view.element.style.setProperty('cursor', null);
     drawLine.removeSegments();
 };
-paper.view.onKeyUp = (event) => {
-    if (event.key === 'z'){
-        if (event.modifiers.shift){
-            redo();
-        }else{
-            undo();
-        }
-    }
-}
+// paper.view.onKeyUp = (event) => {
+//     if (event.key === 'z'){
+//         if (event.modifiers.shift){
+//             redo();
+//         }else{
+//             undo();
+//         }
+//     }
+// }
 // Global functions
-window.selectFn = (fn) => graph.selectFn(fn);
-window.selectDrawMode = (bool) => drawMode = bool;
-window.undo = () => {
-    const lastLine = graphStack.lastChild;
-    if (lastLine !== null){
-        lastLine.remove();
-        redoStack.addChild(lastLine);
-    }
-}
-window.redo = () => {
-    const lastLine = redoStack.lastChild;
-    if (lastLine !== null) {
-        lastLine.remove();
-        graphStack.addChild(lastLine);
-    }
-}
+// window.selectFn = (fn) => graph.selectFn(fn);
+// window.selectDrawMode = (bool) => drawMode = bool;
+// window.undo = () => {
+//     const lastLine = graphStack.lastChild;
+//     if (lastLine !== null){
+//         lastLine.remove();
+//         redoStack.addChild(lastLine);
+//     }
+// }
+// window.redo = () => {
+//     const lastLine = redoStack.lastChild;
+//     if (lastLine !== null) {
+//         lastLine.remove();
+//         graphStack.addChild(lastLine);
+//     }
+// }
 
 
 
