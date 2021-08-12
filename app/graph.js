@@ -48,10 +48,10 @@ export class Graph {
         return math.usolve(await U, await v);
     }
 
-    draw(args, w) {
+    draw(args, w, color) {
         const line = new paper.Path({
             strokeWidth: 2,
-            strokeColor: 'blue',
+            strokeColor: color,
         });
 
         for (let x = 0; x < w; x += 1) {
@@ -61,11 +61,12 @@ export class Graph {
             }
         }
         line.simplify();
+        return line;
     }
 
-    async fitDraw(w) {
+    async fitDraw(w, color) {
         const args = await this.fit();
-        this.draw(args, w);
+        return this.draw(args, w, color);
     }
 
     canFit = () => 0 !== this.A.length;
