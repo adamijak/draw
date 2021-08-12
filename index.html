@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,31 +18,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="fnSet1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Functions 1
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="fnSet1">
-                        <li><button class="dropdown-item" onclick="selectFn('x')">x</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x2')">x^2</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x3')">x^3</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('x1/2')">x^1/2</button></li>
-                        <!--                        <li><button class="dropdown-item" onclick="P5.selectFun('sin')">sin x</button></li>-->
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="fnSet2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Functions 2
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="fnSet2">
-                        <li><button class="dropdown-item" onclick="selectFn('log')">log x</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('1/x')">1/x</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('ex')">e^x</button></li>
-                        <li><button class="dropdown-item" onclick="selectFn('2x')">2^x</button></li>
-                    </ul>
-                </li>
+                <select class="form-select" id="functionSelector" aria-label="Functions select">
+                    <option selected value="x">x</option>
+                    <option value="x2">x^2</option>
+                    <option value="x3">x^3</option>
+                    <option value="x1/2">x^1/2</option>
+                    <option value="log">log x</option>
+                    <option value="1/x">1/x</option>
+                    <option value="ex">e^x</option>
+                    <option value="2x">2^x</option>
+                </select>
             </ul>
-            <input class="mx-3" type="color" id="color" value="#0000ff">
+            <input class="mx-3" type="color" id="colorSelector" value="#0000ff">
 
             <div class="btn-group mx-3">
                 <button class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'z'" onclick="undo()">Undo</button>
