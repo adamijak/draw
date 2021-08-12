@@ -38,7 +38,7 @@ paper.project.view.onMouseDrag = (event) => {
 
 paper.project.view.onMouseUp = (event) => {
     if (graph.canFit()) {
-        graph.fitDraw(paper.project.view.size.width, color.value).then((line) => {
+        graph.fitDraw(paper.project.view.size.width, colorSelector.value).then((line) => {
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
