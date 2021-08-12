@@ -7,8 +7,6 @@ export class MouseTools {
 
     selectTool(tool) {
         const selectedTool = this.tools[tool];
-        paper.project.view.onMouseDown = selectedTool.onMouseDown;
-        paper.project.view.onMouseDrag = selectedTool.onMouseDrag;
-        paper.project.view.onMouseUp = selectedTool.onMouseUp;
+        selectedTool(paper.project.view);
     }
 }

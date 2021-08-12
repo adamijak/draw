@@ -7,6 +7,7 @@ const colorSelector = document.getElementById('colorSelector');
 const functionSelector = document.getElementById('functionSelector');
 const offsetDrawMode = document.getElementById("offsetDrawMode");
 
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -23,64 +24,6 @@ const drawLine = new paper.Path({
     selected: true,
 });
 
-let clickCounter = 0;
-const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw', {
-    'centeredDraw': {
-        onMouseDown: (event) => {
-            paper.project.view.element.style.setProperty('cursor', 'crosshair');
-            graph.offset(event.point);
-            graph.selectFn(functionSelector.value);
-            axes.secAxesMove(event.point);
-        },
-        onMouseDrag: (event) => {
-            drawLine.add(event.point);
-            graph.append(event.point);
-        },
-        onMouseUp: (event) => {
-            fit();
-            paper.project.view.element.style.setProperty('cursor', null);
-            drawLine.removeSegments();
-        },
-    },
-
-    'offsetDraw': {
-        onMouseDown: (event) => {
-            if(clickCounter === 0){
-                paper.project.view.element.style.setProperty('cursor', 'crosshair');
-                graph.offset(event.point);
-                functionSelector.disabled = true;
-                graph.selectFn(functionSelector.value);
-                axes.secAxesMove(event.point);
-            }else{
-                drawLine.add(event.point);
-                graph.append(event.point);
-            }
-            clickCounter++;
-        },
-        onMouseDrag: (event) => {
-            if(clickCounter === 3){
-                drawLine.add(event.point);
-                graph.append(event.point);
-            }
-        },
-        onMouseUp: (event) => {
-            if(clickCounter === 3){
-                fit();
-                endOffsetDraw();
-            }else if (clickCounter !== 0){
-                clickCounter++;
-            }
-        },
-    },
-});
-
-const endOffsetDraw = () => {
-    clickCounter = 0;
-    functionSelector.disabled = false;
-    paper.project.view.element.style.setProperty('cursor', null);
-    drawLine.removeSegments();
-};
-
 const fit = () => {
     if (graph.canFit()) {
         graph.fitDraw(paper.project.view.size.width, colorSelector.value).then((line) => {
@@ -91,8 +34,8 @@ const fit = () => {
     }
 };
 
-paper.view.onKeyUp = (event) => {
-    switch (event.key){
+const handleCommonKeys = (event) => {
+    switch (event.key) {
         case 'z':
             if (event.modifiers.shift) {
                 redo();
@@ -100,29 +43,105 @@ paper.view.onKeyUp = (event) => {
                 undo();
             }
             break;
-        case 'escape':
-            endOffsetDraw()
-            break;
     }
 }
+
+const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw', {
+    'centeredDraw': (obj) => {
+        obj.onMouseDown = (event) => {
+            paper.project.view.element.style.setProperty('cursor', 'crosshair');
+            graph.offset(event.point);
+            graph.selectFn(functionSelector.value);
+            axes.secAxesMove(event.point);
+        };
+
+        obj.onMouseDrag = (event) => {
+            drawLine.add(event.point);
+            graph.append(event.point);
+        };
+
+        obj.onMouseUp = (event) => {
+            fit();
+            paper.project.view.element.style.setProperty('cursor', null);
+            drawLine.removeSegments();
+        };
+
+        obj.onKeyUp = handleCommonKeys;
+    },
+    'offsetDraw': (obj) => {
+        let clickCounter = 0;
+        const endOffsetDraw = () => {
+            clickCounter = 0;
+            functionSelector.disabled = false;
+            paper.project.view.element.style.setProperty('cursor', null);
+            drawLine.removeSegments();
+        };
+
+        obj.onMouseDown = (event) => {
+            if (clickCounter === 0) {
+                paper.project.view.element.style.setProperty('cursor', 'crosshair');
+                graph.offset(event.point);
+                functionSelector.disabled = true;
+                graph.selectFn(functionSelector.value);
+                axes.secAxesMove(event.point);
+            } else {
+                drawLine.add(event.point);
+                graph.append(event.point);
+            }
+            clickCounter++;
+        };
+
+        obj.onMouseDrag = (event) => {
+            if (clickCounter === 3) {
+                drawLine.add(event.point);
+                graph.append(event.point);
+            }
+        };
+
+        obj.onMouseUp = (event) => {
+            if (clickCounter === 3) {
+                fit();
+                endOffsetDraw();
+            } else if (clickCounter !== 0) {
+                clickCounter++;
+            }
+        };
+
+        obj.onKeyUp = (event) => {
+            switch (event.key) {
+                case 'escape':
+                    endOffsetDraw()
+                    break;
+                default:
+                    handleCommonKeys(event.key);
+            }
+        }
+    },
+});
+
 
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');
 
-document.getElementById('undo').onclick = () => {
+const undo = () => {
     const lastLine = graphStack.lastChild;
     if (lastLine !== null) {
         lastLine.remove();
         redoStack.addChild(lastLine);
     }
 }
-document.getElementById('redo').onclick = () => {
+
+const redo = () => {
     const lastLine = redoStack.lastChild;
     if (lastLine !== null) {
         lastLine.remove();
         graphStack.addChild(lastLine);
     }
 }
+
+document.getElementById('undo').onclick = undo;
+document.getElementById('redo').onclick = redo;
+
 
 
 
