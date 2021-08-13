@@ -51,7 +51,6 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         obj.onMouseDown = (event) => {
             paper.project.view.element.style.setProperty('cursor', 'crosshair');
             graph.offset(event.point);
-            graph.selectFn(functionSelector.value);
             axes.secAxesMove(event.point);
         };
 
@@ -82,7 +81,6 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
                 paper.project.view.element.style.setProperty('cursor', 'crosshair');
                 graph.offset(event.point);
                 functionSelector.disabled = true;
-                graph.selectFn(functionSelector.value);
                 axes.secAxesMove(event.point);
             } else {
                 drawLine.add(event.point);
@@ -122,6 +120,11 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
 
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');
+functionSelector.onchange = () => {
+    const defaultTool = graph.selectFn(functionSelector.value);
+    mouseTools.selectTool(defaultTool);
+    offsetDrawMode.checked = defaultTool === 'offsetDraw';
+}
 
 const undo = () => {
     const lastLine = graphStack.lastChild;

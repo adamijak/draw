@@ -1,23 +1,52 @@
 export class Graph {
-    #selectedFn = this.#selectFn("x");
+    functions = {
+        "x": {
+            fn: (x) => [x],
+            defaultTool:  'centeredDraw',
+        },
+        "x2": {
+            fn: (x) => [x**2],
+            defaultTool:  'centeredDraw',
+        },
+        "x3": {
+            fn: (x) => [x**3],
+            defaultTool:  'centeredDraw',
+        },
+        "x1/2": {
+            fn: (x) => [x**1/2],
+            defaultTool:  'centeredDraw',
+        },
+        "1/x": {
+            fn: (x) => [1/x],
+            defaultTool:  'offsetDraw',
+        },
+        "log": {
+            fn: (x) => [Math.log10(x)],
+            defaultTool:  'offsetDraw',
+        },
+        "ex": {
+            fn: (x) => [Math.E**x],
+            defaultTool:  'offsetDraw',
+        },
+        "2x": {
+            fn: (x) => [2**x],
+            defaultTool:  'offsetDraw',
+        },
+        "x3x2": {
+            fn: (x) => [x**3,x**2],
+            defaultTool:  'centeredDraw',
+        },
+    };
+
+    #selected = this.functions['x'];
     A = [];
     b = [];
     x0 = 0;
     y0 = 0;
 
-    #selectFn(func){
-        switch (func) {
-            case "x": return (x) => [x];
-            case "x2": return (x) => [x**2];
-            case "x3": return (x) => [x**3];
-            case "x1/2": return (x) => [x**(1/2)];
-            case "1/x": return (x) => [1/x];
-            case "log": return (x) => [Math.log10(x)];
-            case "ex": return (x) => [Math.E**x];
-            case "2x": return (x) => [2**x];
-        }
-    }
-    #fnX = (x, args) => math.dot(this.#selectedFn(x), args);
+
+
+    #fnX = (x, args) => math.dot(this.#selected.fn(x), args);
 
     clear() {
         this.A = [];
@@ -25,11 +54,12 @@ export class Graph {
     }
 
     selectFn(fn){
-        this.#selectedFn = this.#selectFn(fn);
+        this.#selected = this.functions[fn];
+        return this.#selected.defaultTool;
     }
 
     append(point) {
-        const fnRow = this.#selectedFn(point.x-this.x0);
+        const fnRow = this.#selected.fn(point.x-this.x0);
         if (!fnRow.includes(NaN) && !fnRow.includes(Infinity) && !fnRow.includes(-Infinity)){
             this.A[this.A.length] = fnRow;
             this.b[this.b.length] = point.y-this.y0;
