@@ -14,7 +14,7 @@ canvas.height = window.innerHeight;
 paper.setup(canvas);
 
 const axes = new Axes(paper.project.view.center);
-let graph = new Graph();
+let graph = new Graph(functionSelector.value);
 let graphStack = new paper.Group();
 let redoStack = new paper.Group({
     visible: false
@@ -24,13 +24,16 @@ const drawLine = new paper.Path({
     selected: true,
 });
 
-const fit = () => {
-    if (graph.canFit()) {
-        graph.fitDraw(paper.project.view.size.width, colorSelector.value).then((line) => {
+const tryFit = () => {
+    try {
+        if (graph.canFit()) {
+            const line = graph.fitDraw(paper.project.view.size.width, colorSelector.value);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
-        });
+        }
+    } catch (e) {
+        console.error(e);
     }
 };
 
@@ -60,7 +63,7 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         };
 
         obj.onMouseUp = (event) => {
-            fit();
+            tryFit();
             paper.project.view.element.style.setProperty('cursor', null);
             drawLine.removeSegments();
         };
@@ -98,7 +101,7 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
 
         obj.onMouseUp = (event) => {
             if (clickCounter === 3) {
-                fit();
+                tryFit();
                 endOffsetDraw();
             } else if (clickCounter !== 0) {
                 clickCounter++;

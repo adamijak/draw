@@ -36,6 +36,10 @@ export class Graph {
             fn: (x) => [x**3,x**2],
             defaultTool:  'centeredDraw',
         },
+        "sin": {
+            fn: (x) => [Math.sin(x),Math.cos(x)],
+            defaultTool:  'offsetDraw',
+        },
     };
 
     #selected = this.functions['x'];
@@ -44,7 +48,9 @@ export class Graph {
     x0 = 0;
     y0 = 0;
 
-
+    constructor(defaultFn) {
+        this.selectFn(defaultFn);
+    }
 
     #fnX = (x, args) => math.dot(this.#selected.fn(x), args);
 
@@ -93,7 +99,7 @@ export class Graph {
         return line;
     }
 
-    async fitDraw(w, color) {
+    fitDraw(w, color) {
         const args = this.fit();
         return this.draw(args, w, color);
     }
