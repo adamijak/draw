@@ -41,11 +41,10 @@ export class Graph {
         this.y0 = point.y;
     }
 
-    async fit(){
-        const [q, r] = tf.linalg.qr(tf.tensor2d(this.A));
-        const U = r.array();
-        const v = q.transpose().dot(this.b).array();
-        return math.usolve(await U, await v);
+    fit(){
+        const {Q,R} = math.qr(math.matrix(this.A));
+        const rn = math.min(R.size());
+        return math.usolve(R.resize([rn,rn]), math.multiply(math.transpose(Q).resize([rn,Q.size()[1]]),this.b));
     }
 
     draw(args, w, color) {
@@ -65,7 +64,7 @@ export class Graph {
     }
 
     async fitDraw(w, color) {
-        const args = await this.fit();
+        const args = this.fit();
         return this.draw(args, w, color);
     }
 
