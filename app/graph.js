@@ -96,7 +96,7 @@ export class Graph {
         return math.usolve(R.resize([rn,rn]), math.multiply(math.transpose(Q).resize([rn,Q.size()[1]]),this.b));
     }
 
-    draw(args, w) {
+    draw(x0, y0, w, fn) {
         const color = this.colorSelector.value;
         const isBreakPoint = this.#selected.isBreakPoint;
 
@@ -109,17 +109,17 @@ export class Graph {
         });
 
         for (let x = 0; x < w; x += 1) {
-            const y = math.dot(this.#selected.fn(x-this.x0), args);
+            const y = fn(x);
 
             if(isNaN(y)){
                 continue;
             }
 
-            if(isBreakPoint && isBreakPoint(x-this.x0)){
+            if(isBreakPoint && isBreakPoint(x-x0)){
                 line.addChild(new paper.Path(pathOpt));
             }
 
-            line.lastChild.add([x,y+this.y0]);
+            line.lastChild.add([x,y+y0]);
         }
         // line.simplify();
         return line;
@@ -127,7 +127,13 @@ export class Graph {
 
     fitDraw(w) {
         const args = this.fit();
-        return this.draw(args, w);
+        return this.draw(this.x0, this.y0, w, (x)=>math.dot(this.#selected.fn(x-this.x0), args));
+    }
+
+    drawExpression(exp,w){
+        const fn = math.compile(exp);
+        const center = paper.project.view.center;
+        return this.draw(center.x, center.y, w, (x)=>-1*fn.evaluate({x:x-center.x}));
     }
 
     canFit = () => 0 !== this.A.length;

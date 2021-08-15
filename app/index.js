@@ -46,7 +46,7 @@ const handleCommonKeys = (event) => {
             }
             break;
     }
-}
+};
 
 const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw', {
     'centeredDraw': (obj) => {
@@ -147,6 +147,11 @@ const redo = () => {
     }
 }
 
+
+document.getElementById('expressionSubmit').onclick = () => {
+    const lastLine = graph.drawExpression(document.getElementById('expression').value, window.innerWidth);
+    graphStack.addChild(lastLine);
+};
 
 document.getElementById('undo').onclick = undo;
 document.getElementById('redo').onclick = redo;

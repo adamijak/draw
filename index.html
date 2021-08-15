@@ -35,15 +35,16 @@
             title="'shift z'">Redo
     </button>
 </div>
-<div class="offcanvas offcanvas-start" style="width: 250px" tabindex="-1" id="offcanvasSettings">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSettings">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Settings</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <div class="input-group mb-2">
-            <input class="form-control" type="text" placeholder="Expression" aria-label="Expression">
-            <button class="btn btn-outline-success">Use</button>
+            <span class="input-group-text"><i>y =</i></span>
+            <input class="form-control" id="expression" type="text" placeholder="Expression" aria-label="Expression">
+            <button class="btn btn-outline-success" id="expressionSubmit">Use</button>
         </div>
         <div class="form-check form-switch mb-2">
             <label class="form-check-label" for="offsetDrawMode" data-bs-toggle="tooltip" data-bs-placement="bottom"
