@@ -3,7 +3,6 @@ import {Axes} from "./axes.js";
 import {MouseTools} from "./mouseTools.js";
 
 const canvas = document.getElementById('canvas');
-const colorSelector = document.getElementById('colorSelector');
 const functionSelector = document.getElementById('functionSelector');
 const offsetDrawMode = document.getElementById("offsetDrawMode");
 
@@ -27,7 +26,7 @@ const drawLine = new paper.Path({
 const tryFit = () => {
     try {
         if (graph.canFit()) {
-            const line = graph.fitDraw(paper.project.view.size.width, colorSelector.value);
+            const line = graph.fitDraw(paper.project.view.size.width);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();

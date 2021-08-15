@@ -1,4 +1,6 @@
 export class Graph {
+    colorSelector = document.getElementById('colorSelector');
+
     functions = {
         "x": {
             fn: (x) => [x],
@@ -13,23 +15,24 @@ export class Graph {
             defaultTool:  'centeredDraw',
         },
         "x1/2": {
-            fn: (x) => [x**1/2],
+            fn: (x) => [x**0.5],
             defaultTool:  'centeredDraw',
         },
         "1/x": {
             fn: (x) => [1/x],
             defaultTool:  'offsetDraw',
+            isBreakPoint: (x) => x === 0,
         },
         "log": {
             fn: (x) => [Math.log10(x)],
             defaultTool:  'offsetDraw',
         },
         "ex": {
-            fn: (x) => [Math.E**x],
+            fn: (x) => [Math.E**(x/100)],
             defaultTool:  'offsetDraw',
         },
         "2x": {
-            fn: (x) => [2**x],
+            fn: (x) => [2**(x/100)],
             defaultTool:  'offsetDraw',
         },
         "x3x2": {
@@ -37,12 +40,20 @@ export class Graph {
             defaultTool:  'centeredDraw',
         },
         "sin": {
-            fn: (x) => [Math.sin(x/20/Math.PI),Math.cos(x/20/Math.PI)],
-            defaultTool:  'offsetDraw',
+            fn: (x) => [Math.sin(x/20/Math.PI)],
+            defaultTool:  'centeredDraw',
+        },
+        "cos": {
+            fn: (x) => [Math.cos(x/20/Math.PI)],
+            defaultTool: 'offsetDraw',
         },
         "tg": {
-            fn: (x) => [Math.tan(x/20/Math.PI)],
+            fn: (x) => [Math.tan((x*Math.PI)/200)],
             defaultTool:  'centeredDraw',
+            isBreakPoint: (x) => {
+                const eps = (x+100)%200;
+                return 0 <= eps && eps <= 1;
+            },
         },
     };
 
@@ -55,8 +66,6 @@ export class Graph {
     constructor(defaultFn) {
         this.selectFn(defaultFn);
     }
-
-    #fnX = (x, args) => math.dot(this.#selected.fn(x), args);
 
     clear() {
         this.A = [];
@@ -87,25 +96,38 @@ export class Graph {
         return math.usolve(R.resize([rn,rn]), math.multiply(math.transpose(Q).resize([rn,Q.size()[1]]),this.b));
     }
 
-    draw(args, w, color) {
-        const line = new paper.Path({
+    draw(args, w) {
+        const color = this.colorSelector.value;
+        const isBreakPoint = this.#selected.isBreakPoint;
+
+        const pathOpt = {
             strokeWidth: 1.5,
             strokeColor: color,
+        }
+        const line = new paper.Group({
+            children: [new paper.Path(pathOpt)]
         });
 
         for (let x = 0; x < w; x += 1) {
-            const y = this.#fnX(x-this.x0,args);
-            if (!isNaN(y) && isFinite(y)){
-                line.add([x,y+this.y0]);
+            const y = math.dot(this.#selected.fn(x-this.x0), args);
+
+            if(isNaN(y)){
+                continue;
             }
+
+            if(isBreakPoint && isBreakPoint(x-this.x0)){
+                line.addChild(new paper.Path(pathOpt));
+            }
+
+            line.lastChild.add([x,y+this.y0]);
         }
         // line.simplify();
         return line;
     }
 
-    fitDraw(w, color) {
+    fitDraw(w) {
         const args = this.fit();
-        return this.draw(args, w, color);
+        return this.draw(args, w);
     }
 
     canFit = () => 0 !== this.A.length;
