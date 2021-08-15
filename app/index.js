@@ -12,7 +12,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 paper.setup(canvas);
-const axes = new Axes(paper.project.view.center);
+const axes = new Axes();
 let graph = new Graph(functionSelector.value);
 let graphStack = new paper.Group();
 let redoStack = new paper.Group({
@@ -118,6 +118,10 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         }
     },
 });
+
+paper.project.view.onResize = () => {
+    axes.axesMoveToCenter();
+};
 
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');

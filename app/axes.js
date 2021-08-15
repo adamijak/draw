@@ -6,8 +6,8 @@ export class Axes{
 
     secondaryAxes = new paper.Group({
         children: [
-            new paper.Path.Line([0, 0], [paper.project.view.size.width, 0]),
-            new paper.Path.Line([0, 0], [0, paper.project.view.size.height]),
+            new paper.Path.Line([0, 0], [window.outerWidth, 0]),
+            new paper.Path.Line([0, 0], [0, window.outerHeight]),
         ],
         strokeWidth: 2,
         strokeColor: 'grey',
@@ -15,14 +15,18 @@ export class Axes{
 
     axes = new paper.Group({
         children: [
-            new paper.Path.Line([0, 0], [paper.project.view.size.width, 0]),
-            new paper.Path.Line([0, 0], [0, paper.project.view.size.height]),
+            new paper.Path.Line([0, 0], [window.outerWidth, 0]),
+            new paper.Path.Line([0, 0], [0, window.outerHeight]),
         ],
         strokeWidth: 2,
         strokeColor: 'black',
     });
 
-    constructor(center) {
+    constructor() {
+        this.axesMoveToCenter();
+    }
+    axesMoveToCenter(){
+        const center = paper.project.view.center;
         this.center.x = Math.floor(center.x/2)*2;
         this.center.y = Math.floor(center.y/2)*2;
         this.axesMove(this.center);

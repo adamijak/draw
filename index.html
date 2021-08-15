@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph draw</title>
     <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet">
     <script src="./js/paper-full.js"></script>
     <script src="./js/math.js"></script>
 </head>
-<body style="overflow: hidden; height: 100%">
+<body>
 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
         aria-controls="offcanvasSettings" style="position: absolute; top: 4px;left: 4px">>
 </button>
@@ -55,12 +56,9 @@
     </div>
 
 </div>
-<main>
-    <canvas id="canvas"></canvas>
-</main>
-
+<canvas id="canvas" resize></canvas>
 <script src="./js/bootstrap.bundle.min.js"></script>
-<script src="./app/app.js" type="module"></script>
+<script src="./app/index.js" type="module"></script>
 
 </body>
 
