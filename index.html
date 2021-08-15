@@ -9,6 +9,7 @@
     <script src="./js/math.js"></script>
 </head>
 <body style="overflow: hidden; height: 100%">
+<button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings" style="position: absolute; top: 4px;left: 4px">></button>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSettings">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Settings</h5>
@@ -33,6 +34,7 @@
             <label class="form-check-label" for="offsetDrawMode" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In offset mode press 'esc' to cancel drawing.">Offset draw</label>
             <input class="form-check-input" type="checkbox" id="offsetDrawMode" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In offset mode press 'esc' to cancel drawing.">
         </div>
+<!--        <label class="form-label" for="colorSelector">Color</label>-->
         <input class="form-control form-control-color" type="color" id="colorSelector" value="#0000ff">
         <div class="btn-group">
             <button class="btn btn-secondary" id="undo" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'z'">Undo</button>

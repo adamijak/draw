@@ -1,7 +1,6 @@
 import {Graph} from "./graph.js"
 import {Axes} from "./axes.js";
 import {MouseTools} from "./mouseTools.js";
-import {OffcanvasButton} from "./offcanvasButton.js";
 
 const canvas = document.getElementById('canvas');
 const functionSelector = document.getElementById('functionSelector');
@@ -13,8 +12,6 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 paper.setup(canvas);
-const offcanvasButton = new OffcanvasButton('offcanvasSettings', [40,30],[62, 30]);
-new paper.Layer();
 const axes = new Axes(paper.project.view.center);
 let graph = new Graph(functionSelector.value);
 let graphStack = new paper.Group();
@@ -121,7 +118,6 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         }
     },
 });
-
 
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');
