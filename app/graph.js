@@ -1,23 +1,71 @@
 export class Graph {
-    #selectedFn = this.#selectFn("x");
+    colorSelector = document.getElementById('colorSelector');
+
+    functions = {
+        "x": {
+            fn: (x) => [x],
+            defaultTool:  'centeredDraw',
+        },
+        "x2": {
+            fn: (x) => [x**2],
+            defaultTool:  'centeredDraw',
+        },
+        "x3": {
+            fn: (x) => [x**3],
+            defaultTool:  'centeredDraw',
+        },
+        "x1/2": {
+            fn: (x) => [x**0.5],
+            defaultTool:  'centeredDraw',
+        },
+        "1/x": {
+            fn: (x) => [1/x],
+            defaultTool:  'offsetDraw',
+            isBreakPoint: (x) => x === 0,
+        },
+        "log": {
+            fn: (x) => [Math.log10(x)],
+            defaultTool:  'offsetDraw',
+        },
+        "ex": {
+            fn: (x) => [Math.E**(x/100)],
+            defaultTool:  'offsetDraw',
+        },
+        "2x": {
+            fn: (x) => [2**(x/100)],
+            defaultTool:  'offsetDraw',
+        },
+        "x3x2": {
+            fn: (x) => [x**3,x**2],
+            defaultTool:  'centeredDraw',
+        },
+        "sin": {
+            fn: (x) => [Math.sin(x/20/Math.PI)],
+            defaultTool:  'centeredDraw',
+        },
+        "cos": {
+            fn: (x) => [Math.cos(x/20/Math.PI)],
+            defaultTool: 'offsetDraw',
+        },
+        "tg": {
+            fn: (x) => [Math.tan((x*Math.PI)/200)],
+            defaultTool:  'centeredDraw',
+            isBreakPoint: (x) => {
+                const eps = (x+100)%200;
+                return 0 <= eps && eps <= 1;
+            },
+        },
+    };
+
+    #selected = this.functions['x'];
     A = [];
     b = [];
     x0 = 0;
     y0 = 0;
 
-    #selectFn(func){
-        switch (func) {
-            case "x": return (x) => [x];
-            case "x2": return (x) => [x**2];
-            case "x3": return (x) => [x**3];
-            case "x1/2": return (x) => [x**(1/2)];
-            case "1/x": return (x) => [1/x];
-            case "log": return (x) => [Math.log10(x)];
-            case "ex": return (x) => [Math.E**x];
-            case "2x": return (x) => [2**x];
-        }
+    constructor(defaultFn) {
+        this.selectFn(defaultFn);
     }
-    #fnX = (x, args) => math.dot(this.#selectedFn(x), args);
 
     clear() {
         this.A = [];
@@ -25,11 +73,12 @@ export class Graph {
     }
 
     selectFn(fn){
-        this.#selectedFn = this.#selectFn(fn);
+        this.#selected = this.functions[fn];
+        return this.#selected.defaultTool;
     }
 
     append(point) {
-        const fnRow = this.#selectedFn(point.x-this.x0);
+        const fnRow = this.#selected.fn(point.x-this.x0);
         if (!fnRow.includes(NaN) && !fnRow.includes(Infinity) && !fnRow.includes(-Infinity)){
             this.A[this.A.length] = fnRow;
             this.b[this.b.length] = point.y-this.y0;
@@ -47,25 +96,38 @@ export class Graph {
         return math.usolve(R.resize([rn,rn]), math.multiply(math.transpose(Q).resize([rn,Q.size()[1]]),this.b));
     }
 
-    draw(args, w, color) {
-        const line = new paper.Path({
+    draw(args, w) {
+        const color = this.colorSelector.value;
+        const isBreakPoint = this.#selected.isBreakPoint;
+
+        const pathOpt = {
             strokeWidth: 1.5,
             strokeColor: color,
+        }
+        const line = new paper.Group({
+            children: [new paper.Path(pathOpt)]
         });
 
         for (let x = 0; x < w; x += 1) {
-            const y = this.#fnX(x-this.x0,args);
-            if (!isNaN(y) && isFinite(y)){
-                line.add([x,y+this.y0]);
+            const y = math.dot(this.#selected.fn(x-this.x0), args);
+
+            if(isNaN(y)){
+                continue;
             }
+
+            if(isBreakPoint && isBreakPoint(x-this.x0)){
+                line.addChild(new paper.Path(pathOpt));
+            }
+
+            line.lastChild.add([x,y+this.y0]);
         }
-        line.simplify();
+        // line.simplify();
         return line;
     }
 
-    async fitDraw(w, color) {
+    fitDraw(w) {
         const args = this.fit();
-        return this.draw(args, w, color);
+        return this.draw(args, w);
     }
 
     canFit = () => 0 !== this.A.length;

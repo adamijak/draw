@@ -3,18 +3,17 @@ import {Axes} from "./axes.js";
 import {MouseTools} from "./mouseTools.js";
 
 const canvas = document.getElementById('canvas');
-const colorSelector = document.getElementById('colorSelector');
 const functionSelector = document.getElementById('functionSelector');
 const offsetDrawMode = document.getElementById("offsetDrawMode");
+
 
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 paper.setup(canvas);
-
 const axes = new Axes(paper.project.view.center);
-let graph = new Graph();
+let graph = new Graph(functionSelector.value);
 let graphStack = new paper.Group();
 let redoStack = new paper.Group({
     visible: false
@@ -24,13 +23,16 @@ const drawLine = new paper.Path({
     selected: true,
 });
 
-const fit = () => {
-    if (graph.canFit()) {
-        graph.fitDraw(paper.project.view.size.width, colorSelector.value).then((line) => {
+const tryFit = () => {
+    try {
+        if (graph.canFit()) {
+            const line = graph.fitDraw(paper.project.view.size.width);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
-        });
+        }
+    } catch (e) {
+        console.error(e);
     }
 };
 
@@ -51,7 +53,6 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         obj.onMouseDown = (event) => {
             paper.project.view.element.style.setProperty('cursor', 'crosshair');
             graph.offset(event.point);
-            graph.selectFn(functionSelector.value);
             axes.secAxesMove(event.point);
         };
 
@@ -61,7 +62,7 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         };
 
         obj.onMouseUp = (event) => {
-            fit();
+            tryFit();
             paper.project.view.element.style.setProperty('cursor', null);
             drawLine.removeSegments();
         };
@@ -82,7 +83,6 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
                 paper.project.view.element.style.setProperty('cursor', 'crosshair');
                 graph.offset(event.point);
                 functionSelector.disabled = true;
-                graph.selectFn(functionSelector.value);
                 axes.secAxesMove(event.point);
             } else {
                 drawLine.add(event.point);
@@ -100,7 +100,7 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
 
         obj.onMouseUp = (event) => {
             if (clickCounter === 3) {
-                fit();
+                tryFit();
                 endOffsetDraw();
             } else if (clickCounter !== 0) {
                 clickCounter++;
@@ -119,9 +119,13 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
     },
 });
 
-
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');
+functionSelector.onchange = () => {
+    const defaultTool = graph.selectFn(functionSelector.value);
+    mouseTools.selectTool(defaultTool);
+    offsetDrawMode.checked = defaultTool === 'offsetDraw';
+}
 
 const undo = () => {
     const lastLine = graphStack.lastChild;
@@ -139,8 +143,11 @@ const redo = () => {
     }
 }
 
+
 document.getElementById('undo').onclick = undo;
 document.getElementById('redo').onclick = redo;
+
+
 
 
 
