@@ -26,7 +26,7 @@ const drawLine = new paper.Path({
 const tryFit = () => {
     try {
         if (graph.canFit()) {
-            const line = graph.fitDraw(window.screen.availWidth);
+            const line = graph.fitDraw(window.innerWidth);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
@@ -46,7 +46,7 @@ const handleCommonKeys = (event) => {
             }
             break;
     }
-}
+};
 
 const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw', {
     'centeredDraw': (obj) => {
@@ -147,6 +147,11 @@ const redo = () => {
     }
 }
 
+
+document.getElementById('expressionSubmit').onclick = () => {
+    const lastLine = graph.drawExpression(document.getElementById('expression').value, window.innerWidth);
+    graphStack.addChild(lastLine);
+};
 
 document.getElementById('undo').onclick = undo;
 document.getElementById('redo').onclick = redo;
