@@ -6,8 +6,8 @@ export class Axes{
 
     secondaryAxes = new paper.Group({
         children: [
-            new paper.Path.Line([0, 0], [window.outerWidth, 0]),
-            new paper.Path.Line([0, 0], [0, window.outerHeight]),
+            new paper.Path.Line([0, 0], [window.screen.availWidth, 0]),
+            new paper.Path.Line([0, 0], [0, window.screen.availHeight]),
         ],
         strokeWidth: 2,
         strokeColor: 'grey',
@@ -15,8 +15,8 @@ export class Axes{
 
     axes = new paper.Group({
         children: [
-            new paper.Path.Line([0, 0], [window.outerWidth, 0]),
-            new paper.Path.Line([0, 0], [0, window.outerHeight]),
+            new paper.Path.Line([0, 0], [window.screen.availWidth, 0]),
+            new paper.Path.Line([0, 0], [0, window.screen.availHeight]),
         ],
         strokeWidth: 2,
         strokeColor: 'black',

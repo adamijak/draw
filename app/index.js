@@ -26,7 +26,7 @@ const drawLine = new paper.Path({
 const tryFit = () => {
     try {
         if (graph.canFit()) {
-            const line = graph.fitDraw(paper.project.view.size.width);
+            const line = graph.fitDraw(window.screen.availWidth);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
