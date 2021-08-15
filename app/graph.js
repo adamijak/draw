@@ -37,8 +37,12 @@ export class Graph {
             defaultTool:  'centeredDraw',
         },
         "sin": {
-            fn: (x) => [Math.sin(x),Math.cos(x)],
+            fn: (x) => [Math.sin(x/20/Math.PI),Math.cos(x/20/Math.PI)],
             defaultTool:  'offsetDraw',
+        },
+        "tg": {
+            fn: (x) => [Math.tan(x/20/Math.PI)],
+            defaultTool:  'centeredDraw',
         },
     };
 
@@ -95,7 +99,7 @@ export class Graph {
                 line.add([x,y+this.y0]);
             }
         }
-        line.simplify();
+        // line.simplify();
         return line;
     }
 
