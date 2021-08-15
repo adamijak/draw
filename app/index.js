@@ -12,7 +12,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 paper.setup(canvas);
-const axes = new Axes(paper.project.view.center);
+const axes = new Axes();
 let graph = new Graph(functionSelector.value);
 let graphStack = new paper.Group();
 let redoStack = new paper.Group({
@@ -26,7 +26,7 @@ const drawLine = new paper.Path({
 const tryFit = () => {
     try {
         if (graph.canFit()) {
-            const line = graph.fitDraw(paper.project.view.size.width);
+            const line = graph.fitDraw(window.screen.availWidth);
             redoStack.removeChildren();
             graphStack.addChild(line)
             graph.clear();
@@ -118,6 +118,10 @@ const mouseTools = new MouseTools(offsetDrawMode.checked ? 'offsetDraw' : 'cente
         }
     },
 });
+
+paper.project.view.onResize = () => {
+    axes.axesMoveToCenter();
+};
 
 // Global functions
 offsetDrawMode.onclick = () => mouseTools.selectTool(offsetDrawMode.checked ? 'offsetDraw' : 'centeredDraw');

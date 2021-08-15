@@ -8,58 +8,53 @@
     <script src="./js/paper-full.js"></script>
     <script src="./js/math.js"></script>
 </head>
-<body style="overflow: hidden; height: 100%">
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
-        aria-controls="offcanvasSettings" style="position: absolute; top: 4px;left: 4px">>
-</button>
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSettings">
+<body>
+<button class="btn btn-primary position-absolute top-0 start-0 m-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">></button>
+<div class="input-group position-absolute top-0 end-0 m-1 w-25" style="min-width: 275px">
+    <select class="form-select" id="functionSelector" aria-label="Functions select">
+        <option selected value="x">x</option>
+        <option value="x2">x^2</option>
+        <option value="x3">x^3</option>
+        <option value="x3x2">x^3 + x^2</option>
+        <option value="x1/2">x^1/2</option>
+        <option value="log">log x</option>
+        <option value="1/x">1/x</option>
+        <option value="ex">e^x</option>
+        <option value="2x">2^x</option>
+        <option value="sin">sin x</option>
+        <option value="cos">cos x</option>
+        <option value="tg">tg x</option>
+    </select>
+    <input class="btn-outline-primary form-control form-control-color" id="colorSelector" type="color"
+           value="#0000ff">
+    <button class="btn btn-outline-primary" id="undo" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            title="'z'">Undo
+    </button>
+    <button class="btn btn-outline-primary" id="redo" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            title="'shift z'">Redo
+    </button>
+</div>
+<div class="offcanvas offcanvas-start" style="width: 250px" tabindex="-1" id="offcanvasSettings">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Settings</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <select class="form-select mb-2" id="functionSelector" aria-label="Functions select">
-            <option selected value="x">x</option>
-            <option value="x2">x^2</option>
-            <option value="x3">x^3</option>
-            <option value="x3x2">x^3 + x^2</option>
-            <option value="x1/2">x^1/2</option>
-            <option value="log">log x</option>
-            <option value="1/x">1/x</option>
-            <option value="ex">e^x</option>
-            <option value="2x">2^x</option>
-            <option value="sin">sin x</option>
-            <option value="cos">cos x</option>
-            <option value="tg">tg x</option>
-        </select>
-        <div class="input-group mb-2">
-            <input class="btn-outline-primary form-control form-control-color" type="color" id="colorSelector"
-                   value="#0000ff">
-            <button class="btn btn-outline-primary" id="undo" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                    title="'z'">Undo
-            </button>
-            <button class="btn btn-outline-primary" id="redo" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                    title="'shift z'">Redo
-            </button>
-        </div>
+<!--        <div class="input-group mb-2">-->
+<!--            <input class="form-control" type="text" placeholder="Expression" aria-label="Expression">-->
+<!--            <button class="btn btn-outline-success">Use</button>-->
+<!--        </div>-->
         <div class="form-check form-switch mb-2">
             <label class="form-check-label" for="offsetDrawMode" data-bs-toggle="tooltip" data-bs-placement="bottom"
                    title="In offset mode press 'esc' to cancel drawing.">Offset draw</label>
             <input class="form-check-input" type="checkbox" id="offsetDrawMode" data-bs-toggle="tooltip"
                    data-bs-placement="bottom" title="In offset mode press 'esc' to cancel drawing.">
         </div>
-<!--        <div class="d-flex mb-2">-->
-<!--            <input class="form-control me-2" type="text" placeholder="Expression" aria-label="Expression">-->
-<!--            <button class="btn btn-outline-success">Use</button>-->
-<!--        </div>-->
     </div>
 </div>
-<main>
-    <canvas id="canvas"></canvas>
-</main>
-
+<canvas id="canvas" resize></canvas>
 <script src="./js/bootstrap.bundle.min.js"></script>
-<script src="./app/app.js" type="module"></script>
+<script src="./app/index.js" type="module"></script>
 
 </body>
 
